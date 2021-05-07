@@ -1,10 +1,14 @@
 import React from "react";
 import axios from "axios";
+import UserContext from "./UserContext";
+import JwtAuth from "../AuthFiles/JwtAuth"
 
 
 class LoginForm extends React.Component{
 
 
+
+    static contextType =  UserContext;
     constructor(props) {
         super(props);
         this.state = this.initialState;
@@ -12,15 +16,21 @@ class LoginForm extends React.Component{
         this.submitLoginForm = this.submitLoginForm.bind(this);
         this.usernameChange = this.usernameChange.bind(this);
         this.passwordChange = this.passwordChange.bind(this);
+        this.logout = this.logout.bind(this);
+        this.login = this.login.bind(this);
+
     }
 
     initialState={
         username:'',
         password:'',
-        jwt:''
+        jwt:'',
+        user:''
     }
 
     componentDidMount() {
+
+        this.setState(() => this.initialState)
     }
 
     usernameChange = (event) =>{
@@ -32,6 +42,28 @@ class LoginForm extends React.Component{
         event.preventDefault();
         this.setState({password:event.target.value})
     }
+
+    logout = ()=> {
+
+        //JwtAuth.logout();
+        //sessionStorage.setItem("jwt",'');
+        sessionStorage.clear();
+        this.setState({jwt:''})
+
+        //this.context.username.update('null')
+
+    }
+
+    login =(jwt) => {
+        //JwtAuth.login(jwt);
+        sessionStorage.setItem("jwt",jwt);
+        sessionStorage.setItem("username",this.state.username);
+        this.setState({jwt:sessionStorage.getItem("jwt")})
+
+        //this.context.username.update(this.state.username)
+
+    }
+
 
     submitLoginForm =async (event) => {
 
@@ -50,7 +82,10 @@ class LoginForm extends React.Component{
             )
             .then(response => response.data)
             .then((data) => {
-                console.log("jwt: "+data.jwt)
+                //this.state.user.setState()
+                //sessionStorage.setItem("jwt",data.jwt);
+                this.login(data.jwt);
+                console.log("jwt from session storage : "+sessionStorage.getItem("jwt"))
             }).catch(error => {
                 console.log(error)
             })
@@ -58,6 +93,8 @@ class LoginForm extends React.Component{
         console.log("Username: "+this.state.username+"\nPassword: "+this.state.password)
 
     }
+
+
 
     render() {
         return (
@@ -80,7 +117,11 @@ class LoginForm extends React.Component{
 
 
                     <button type={'submit'}>Login</button>
+
                 </form>
+                <button onClick={this.logout}>Logout</button>
+
+                JWT: {this.state.jwt}
             </div>
         );
     }
