@@ -25,12 +25,18 @@ class LoginForm extends React.Component{
         username:'',
         password:'',
         jwt:'',
-        user:''
+        user:'',
+        loginStatus:'loggedOut'
     }
+
+    //static contextType = UserContext;
 
     componentDidMount() {
 
         this.setState(() => this.initialState)
+        if((sessionStorage.getItem("jwt") != null)  && (this.context.username != 'noUser')  ){
+            this.setState({loginStatus:'loggedIn'})
+        }
     }
 
     usernameChange = (event) =>{
@@ -50,12 +56,13 @@ class LoginForm extends React.Component{
         sessionStorage.clear();
         this.setState({jwt:''})
 
+        this.setState({loginStatus:'loggedOut'})
+
         //this.context.username.update('null')
 
     }
 
-    login =(jwt) => {
-        //JwtAuth.login(jwt);
+    login=(jwt) => {
         sessionStorage.setItem("jwt",jwt);
         sessionStorage.setItem("username",this.state.username);
         this.setState({jwt:sessionStorage.getItem("jwt")})
@@ -84,10 +91,16 @@ class LoginForm extends React.Component{
             .then((data) => {
                 //this.state.user.setState()
                 //sessionStorage.setItem("jwt",data.jwt);
+
                 this.login(data.jwt);
                 console.log("jwt from session storage : "+sessionStorage.getItem("jwt"))
+                this.setState({loginStatus:'loggedIn'})
             }).catch(error => {
                 console.log(error)
+                this.setState({username:'invalidUser'})
+                if(error.response.status === 403){
+                    this.setState({loginStatus:'invalidCredentials'})
+                }
             })
 
         console.log("Username: "+this.state.username+"\nPassword: "+this.state.password)
@@ -98,31 +111,68 @@ class LoginForm extends React.Component{
 
     render() {
         return (
-            <div>
-                <h3>Login form</h3>
-                <form onSubmit={this.submitLoginForm.bind(this)}>
-                    Username:  <input
-                    required
-                    type={'text'}
-                    name={'username'}
-                onChange={this.usernameChange.bind(this)}/>
+            <UserContext.Consumer>
+                {({setUsername}) => (
+                    <div>
+                        <h3>Login form</h3>
+                        <form onSubmit={this.submitLoginForm.bind(this)}>
+                            Username:  <input
+                            required
+                            type={'text'}
+                            name={'username'}
+                            onChange={this.usernameChange.bind(this)}/>
 
 
 
-                    Password: <input
-                    required
-                    type={'password'}
-                    name={'password'}
-                onChange={this.passwordChange.bind(this)}/> <br />
+                            Password: <input
+                            required
+                            type={'password'}
+                            name={'password'}
+                            onChange={this.passwordChange.bind(this)}/> <br />
 
 
-                    <button type={'submit'}>Login</button>
+                            <button onClick={ async () => {
+                                await this.submitLoginForm.bind(this);
+                                setUsername(this.state.username);
 
-                </form>
-                <button onClick={this.logout}>Logout</button>
+                            }}>Login</button>
 
-                JWT: {this.state.jwt}
-            </div>
+                        </form>
+                        <button onClick={() =>{
+                            this.logout();
+                            setUsername('noUser');
+                        }
+                        }>
+                            Logout
+                        </button>
+
+                        JWT: {this.state.jwt}
+
+                        <div>
+                            {
+                                this.state.loginStatus === 'invalidCredentials'?
+                                    <div>
+                                        <h4>Invalid Credentials</h4>
+                                    </div>:
+                                    <div>
+                                        {
+                                            this.state.loginStatus === 'loggedIn'?
+                                                <div>
+                                                    <h3>Logged in as {this.context.username}</h3>
+                                                </div>:
+
+                                                <div></div>
+                                        }
+
+                                    </div>
+                            }
+                        </div>
+                    </div>
+                )
+
+                }
+            </UserContext.Consumer>
+
         );
     }
 
