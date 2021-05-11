@@ -39,9 +39,15 @@ class Admin extends React.Component{
 
                 this.setState({allowed:true})
             }).catch(error => {
+
+                console.log('Error status: '+error.response.status)
             if(token === null){
                 alert("Please Login")
                 this.setState({jwt:'null'})
+
+                if (error.response.status === 404){
+                    alert("Backend server might be down")
+                }
             }
             else{
 

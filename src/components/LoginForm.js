@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import UserContext from "./UserContext";
-import JwtAuth from "../AuthFiles/JwtAuth"
+import IdleTimer from "react-idle-timer";
 
 
 class LoginForm extends React.Component{
@@ -133,7 +133,10 @@ class LoginForm extends React.Component{
 
                             <button onClick={ async () => {
                                 await this.submitLoginForm.bind(this);
-                                setUsername(this.state.username);
+                                if(sessionStorage.getItem("jwt") != null){  //check whether a jwt has been received
+                                    setUsername(this.state.username);
+                                }
+
 
                             }}>Login</button>
 

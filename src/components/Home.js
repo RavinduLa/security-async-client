@@ -28,10 +28,10 @@ class Home extends React.Component{
                 <h1>Secure Test</h1>
 
 
-                <LoginForm />
 
+                <Link to={"/login"}>Login</Link> <br />
 
-                JWT: {sessionStorage.getItem("jwt")}
+                JWT: {sessionStorage.getItem("jwt")} <br />
 
                 <Link to={"/admin"} >Admin</Link>
 

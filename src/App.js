@@ -63,6 +63,7 @@ class App extends React.Component{
                         <Navbar />
                         <Route path="/" exact component={Home} />
                         <Route path="/admin" exact component={Admin} />
+                        <Route path="/login" exact component={LoginForm} />
                         </UserContextProvider>
 
 
