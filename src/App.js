@@ -58,21 +58,25 @@ class App extends React.Component{
     _onIdle(e){
         console.log('User is idle',e);
 
-        const isTimedOut = this.state.isTimedOut;
-        if (isTimedOut){
-            //this.props.history.push('/');
-            //this.history.push('/');
-            //return <Redirect to={'/'} />
+        if(sessionStorage.getItem("jwt") !=  null){
+            const isTimedOut = this.state.isTimedOut;
+            if (isTimedOut){
+                //this.props.history.push('/');
+                //this.history.push('/');
+                //return <Redirect to={'/'} />
 
 
-            //this.context.logoutContext.bind(this);
-            sessionStorage.clear();
+                //this.context.logoutContext.bind(this);
+                sessionStorage.clear();
+            }
+            else{
+                this.setState({showModal:true});
+                this.idleTimer.reset();
+                this.setState({isTimedOut:true})
+            }
         }
-        else{
-            this.setState({showModal:true});
-            this.idleTimer.reset();
-            this.setState({isTimedOut:true})
-        }
+
+
     }
 
     handleClose() {
