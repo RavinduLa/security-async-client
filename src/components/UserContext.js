@@ -13,6 +13,7 @@ export class UserContextProvider extends React.Component{
         this.state =  this.initialState;
 
         this.setUsername = this.setUsername.bind(this);
+        this.logoutContext = this.logoutContext.bind(this);
     }
 
     componentDidMount() {

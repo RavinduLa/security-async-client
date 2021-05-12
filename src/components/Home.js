@@ -20,30 +20,32 @@ class Home extends React.Component{
         jwt:''
     }
 
+    static contextType =  UserContext;
     componentDidMount() {
         this.setState(() => this.initialState)
+        let value = this.context;
+        if(sessionStorage.getItem("jwt") === null){
+            value.setUsername('noUser');
+        }
+        //value.logoutContext.bind(this);
     }
 
     render() {
 
         return (
 
+                        <div>
+                            <h1>Secure Test</h1>
 
-            <div>
+                            <Link to={"/login"}>Login</Link> <br />
 
-                <h1>Secure Test</h1>
+                            JWT: {sessionStorage.getItem("jwt")} <br />
 
+                            <Link to={"/admin"} >Admin</Link>  <br />
 
+                            <Link to={"/profile"} >Profile</Link>
+                        </div>
 
-                <Link to={"/login"}>Login</Link> <br />
-
-                JWT: {sessionStorage.getItem("jwt")} <br />
-
-                <Link to={"/admin"} >Admin</Link>  <br />
-
-                <Link to={"/profile"} >Profile</Link>
-
-            </div>
         );
     }
 

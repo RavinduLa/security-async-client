@@ -112,7 +112,7 @@ class LoginForm extends React.Component{
     render() {
         return (
             <UserContext.Consumer>
-                {({setUsername}) => (
+                {  ({setUsername}) => (
                     <div>
                         <h3>Login form</h3>
                         <form onSubmit={this.submitLoginForm.bind(this)}>

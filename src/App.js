@@ -12,6 +12,7 @@ import IdleTimer from "react-idle-timer";
 import PropTypes from 'prop-types';
 import {IdleTimeOutModal} from "./IdleTimeoutModal";
 import Profile from "./components/Profile";
+import logoutComponent from "./components/logoutComponent";
 
 
 class App extends React.Component{
@@ -36,10 +37,12 @@ class App extends React.Component{
         this.onActive = this._onActive.bind(this);
         this.onIdle = this._onIdle.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleLogout = this.handleLogout.bind(this)
+        this.handleLogout = this.handleLogout.bind(this);
+
 
     }
     static contextType =  UserContext;
+
 
 
     _onAction(e){
@@ -54,12 +57,16 @@ class App extends React.Component{
 
     _onIdle(e){
         console.log('User is idle',e);
+
         const isTimedOut = this.state.isTimedOut;
         if (isTimedOut){
             //this.props.history.push('/');
             //this.history.push('/');
             //return <Redirect to={'/'} />
-            this.context.logoutContext();
+
+
+            //this.context.logoutContext.bind(this);
+            sessionStorage.clear();
         }
         else{
             this.setState({showModal:true});
@@ -76,11 +83,16 @@ class App extends React.Component{
         this.setState({showModal: false})
         //return <Redirect to={'/'} />
         //this.props.history.push('/')
-        this.context.logoutContext();
+
+        sessionStorage.clear();
+        //this.context.logoutContext.bind(this);
+
     }
 
 
     componentDidMount() {
+        //this.context.logoutContext = this.context.logoutContext.bind(this);
+        //let contextValue = this.context;
 
     }
 
