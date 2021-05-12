@@ -4,6 +4,7 @@ import LoginForm from "./LoginForm";
 import UserContext from "./UserContext";
 import {Link} from "react-router-dom";
 import Navbar from "./Navbar";
+import IdleTimer from "react-idle-timer";
 
 
 class Home extends React.Component{
@@ -11,7 +12,9 @@ class Home extends React.Component{
         super(props);
 
         this.state = this.initialState;
+
     }
+
 
     initialState={
         jwt:''
@@ -22,7 +25,10 @@ class Home extends React.Component{
     }
 
     render() {
+
         return (
+
+
             <div>
 
                 <h1>Secure Test</h1>
@@ -33,7 +39,9 @@ class Home extends React.Component{
 
                 JWT: {sessionStorage.getItem("jwt")} <br />
 
-                <Link to={"/admin"} >Admin</Link>
+                <Link to={"/admin"} >Admin</Link>  <br />
+
+                <Link to={"/profile"} >Profile</Link>
 
             </div>
         );

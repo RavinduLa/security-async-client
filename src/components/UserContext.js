@@ -28,6 +28,11 @@ export class UserContextProvider extends React.Component{
         this.setState({username:username});
     }
 
+    logoutContext(){
+        sessionStorage.clear();
+        this.setState({username:'noUser'})
+    }
+
     render() {
         return (
             <UserContext.Provider value={this.state}>

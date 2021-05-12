@@ -133,9 +133,8 @@ class LoginForm extends React.Component{
 
                             <button onClick={ async () => {
                                 await this.submitLoginForm.bind(this);
-                                if(sessionStorage.getItem("jwt") != null){  //check whether a jwt has been received
-                                    setUsername(this.state.username);
-                                }
+                                setUsername(this.state.username);
+
 
 
                             }}>Login</button>
